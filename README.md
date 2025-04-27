@@ -30,7 +30,7 @@ A powerful script for automating the optimization and plugin installation proces
 
 # How to Use:
 **One - click to install it**
-```bash <(curl -s https://raw.githubusercontent.com/VanshOPAlt/hibernate-wings/main/install.sh)```
+```bash <(curl -s https://raw.githubusercontent.com/IC-DEVLEPMENTS/Pterodactyl-Server-Optimizer-Plugin-Installer/refs/heads/main/install.sh)```
 Run the script on your Pterodactyl node.
 
 Automatically optimize and install plugins across all your Minecraft servers.
