@@ -6,21 +6,20 @@ then
   exit
 fi
 
-echo "Installing Minecraft server optimization plugins for Pterodactyl Wings..."
+echo "Installing Minecraft server optimization plugins on all servers..."
 
-# Pterodactyl Wings volumes directory
+# Where all servers are stored
 VOLUMES_DIR="/var/lib/pterodactyl/volumes"
 
-# Temporary folder to download plugins first
+# Temp folder for downloading plugins first
 TEMP_PLUGINS_DIR="/tmp/mc-optimize-plugins"
 
-# Create temporary plugin folder
+# Create temp plugin download folder
 mkdir -p "$TEMP_PLUGINS_DIR"
 
 # Download optimization plugins
 echo "Downloading optimization plugins..."
 
-# Existing plugins
 curl -L -o "$TEMP_PLUGINS_DIR/ClearLag.jar" https://dev.bukkit.org/projects/clearlagg/files/latest
 curl -L -o "$TEMP_PLUGINS_DIR/FarmLimiter.jar" https://hangar.papermc.io/api/v1/projects/ryder/FarmLimiter/versions/latest/PAPER/download
 curl -L -o "$TEMP_PLUGINS_DIR/Spark.jar" https://hangar.papermc.io/api/v1/projects/lucko/spark/versions/latest/PAPER/download
@@ -33,17 +32,12 @@ curl -L -o "$TEMP_PLUGINS_DIR/PetBlocks.jar" https://hangar.papermc.io/api/v1/pr
 curl -L -o "$TEMP_PLUGINS_DIR/ChunkSpawnerLimiter.jar" https://hangar.papermc.io/api/v1/projects/agentenderman/ChunkSpawnerLimiter/versions/latest/PAPER/download
 curl -L -o "$TEMP_PLUGINS_DIR/ServerBooster.jar" https://hangar.papermc.io/api/v1/projects/OmegaSeason/ServerBooster/versions/latest/PAPER/download
 
-# New optimization plugins
-curl -L -o "$TEMP_PLUGINS_DIR/CoreProtect.jar" https://ci.curseforge.com/api/v1/projects/coreprotect/versions/latest/download
-curl -L -o "$TEMP_PLUGINS_DIR/WorldBorder.jar" https://ci.drtshock.net/job/WorldBorder/lastSuccessfulBuild/artifact/worldborder-*.jar
-curl -L -o "$TEMP_PLUGINS_DIR/NoLagg.jar" https://ci.minehut.com/job/NoLagg/lastSuccessfulBuild/artifact/NoLagg.jar
-
 echo "Plugins downloaded successfully."
 
-# Install into all existing servers under Wings
+# Install into all existing servers
 echo "Installing plugins into all existing servers..."
 
-for server in "$VOLUMES_DIR"/*/server/*
+for server in "$VOLUMES_DIR"/*
 do
   if [ -d "$server/plugins" ]; then
     echo "Installing plugins in $server..."
@@ -65,13 +59,5 @@ echo "All servers optimized and template created!"
 
 # Clean up temp folder
 rm -rf "$TEMP_PLUGINS_DIR"
-
-# Set up a cron job to install plugins on new servers
-echo "Setting up cron job to install plugins for new servers..."
-
-CRON_JOB="@reboot root /bin/bash /path/to/this/script.sh"
-
-# Add cron job to root's crontab if not already added
-(crontab -l | grep -v "$CRON_JOB"; echo "$CRON_JOB") | crontab -
 
 echo "Done!"
